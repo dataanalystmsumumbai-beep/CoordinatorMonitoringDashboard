@@ -1,6 +1,5 @@
 import streamlit as st
 from datetime import date
-
 from config import MASTER_TASKS, COORDINATORS
 from utils.google_sheets import save_review
 
@@ -11,8 +10,7 @@ st.set_page_config(
 )
 
 st.title("📋 Daily Review")
-
-st.markdown("---")
+st.divider()
 
 col1, col2 = st.columns(2)
 
@@ -28,78 +26,108 @@ with col2:
         COORDINATORS
     )
 
-st.markdown("---")
+st.divider()
 
-st.subheader("Task Review")
+st.subheader("Reports Review")
+
+records = []
+
+completed = 0
 
 for task in MASTER_TASKS:
 
-    with st.container(border=True):
+    c1, c2, c3 = st.columns([5,2,4])
 
-        st.markdown(f"### {task['name']}")
+    with c1:
+        st.write(task["name"])
 
-        c1, c2 = st.columns([1,2])
+    with c2:
+        done = st.checkbox(
+            "Completed",
+            key=task["name"]
+        )
 
-        with c1:
+    with c3:
+        remarks = st.text_input(
+            "Remarks",
+            key=task["name"]+"_remarks",
+            label_visibility="collapsed",
+            placeholder="Remarks..."
+        )
 
-            status = st.selectbox(
+    status = "Completed" if done else "Pending"
 
-                "Status",
+    if done:
+        completed += 1
 
-                [
+    records.append({
 
-                    "Completed",
+        "date": str(review_date),
 
-                    "Pending",
+        "coordinator": coordinator,
 
-                    "Not Applicable"
+        "task": task["name"],
 
-                ],
+        "frequency": task["frequency"],
 
-                key=task["name"]
+        "priority": task["priority"],
 
-            )
+        "status": status,
 
-        with c2:
+        "remarks": remarks
 
-            remarks = st.text_input(
+    })
 
-                "Remarks",
+total = len(records)
 
-                key=task["name"]+"_remarks"
+pending = total - completed
 
-            )
+percent = round(completed / total * 100, 1)
 
-        if st.button(
+st.divider()
 
-            f"💾 Save {task['name']}",
+a, b, c, d = st.columns(4)
 
-            key="save_"+task["name"]
+a.metric("Total Tasks", total)
 
-        ):
+b.metric("Completed", completed)
 
-            result = save_review(
+c.metric("Pending", pending)
 
-                review_date,
+d.metric("Completion", f"{percent}%")
 
-                coordinator,
+st.progress(percent / 100)
 
-                task["name"],
+st.divider()
 
-                task["frequency"],
+if st.button(
+    "💾 SAVE TODAY'S REVIEW",
+    use_container_width=True
+):
 
-                task["priority"],
+    success = 0
 
-                status,
+    for row in records:
 
-                remarks
+        response = save_review(
 
-            )
+            row["date"],
 
-            if result["success"]:
+            row["coordinator"],
 
-                st.success("Saved Successfully")
+            row["task"],
 
-            else:
+            row["frequency"],
 
-                st.error(result["message"])
+            row["priority"],
+
+            row["status"],
+
+            row["remarks"]
+
+        )
+
+        if response["success"]:
+            success += 1
+
+    st.success(f"{success} Tasks Saved Successfully")
