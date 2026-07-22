@@ -1,7 +1,8 @@
 import streamlit as st
-import pandas as pd
+from datetime import date
 
 from config import MASTER_TASKS, COORDINATORS
+from utils.google_sheets import save_review
 
 st.set_page_config(
     page_title="Daily Review",
@@ -11,16 +12,15 @@ st.set_page_config(
 
 st.title("📋 Daily Review")
 
-st.divider()
-
-# -----------------------------
-# Top Filters
-# -----------------------------
+st.markdown("---")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    review_date = st.date_input("Review Date")
+    review_date = st.date_input(
+        "Review Date",
+        value=date.today()
+    )
 
 with col2:
     coordinator = st.selectbox(
@@ -28,72 +28,78 @@ with col2:
         COORDINATORS
     )
 
-st.divider()
+st.markdown("---")
 
-# -----------------------------
-# Create Table
-# -----------------------------
-
-rows = []
+st.subheader("Task Review")
 
 for task in MASTER_TASKS:
 
-    rows.append({
-        "Task": task["name"],
-        "Frequency": task["frequency"],
-        "Priority": task["priority"],
-        "Completed": False,
-        "Remarks": ""
-    })
+    with st.container(border=True):
 
-df = pd.DataFrame(rows)
+        st.markdown(f"### {task['name']}")
 
-edited_df = st.data_editor(
+        c1, c2 = st.columns([1,2])
 
-    df,
+        with c1:
 
-    use_container_width=True,
+            status = st.selectbox(
 
-    hide_index=True,
+                "Status",
 
-    num_rows="fixed"
+                [
 
-)
+                    "Completed",
 
-st.divider()
+                    "Pending",
 
-# -----------------------------
-# Summary
-# -----------------------------
+                    "Not Applicable"
 
-completed = edited_df["Completed"].sum()
+                ],
 
-total = len(edited_df)
+                key=task["name"]
 
-pending = total - completed
+            )
 
-percent = round((completed / total) * 100, 1)
+        with c2:
 
-c1, c2, c3, c4 = st.columns(4)
+            remarks = st.text_input(
 
-c1.metric("Total", total)
+                "Remarks",
 
-c2.metric("Completed", completed)
+                key=task["name"]+"_remarks"
 
-c3.metric("Pending", pending)
+            )
 
-c4.metric("Completion", f"{percent}%")
+        if st.button(
 
-st.progress(percent / 100)
+            f"💾 Save {task['name']}",
 
-st.divider()
+            key="save_"+task["name"]
 
-# -----------------------------
-# Save Button
-# -----------------------------
+        ):
 
-if st.button("💾 Save Review"):
+            result = save_review(
 
-    st.success(
-        "Review Saved Successfully (Google Sheet Integration Next Step)"
-    )
+                review_date,
+
+                coordinator,
+
+                task["name"],
+
+                task["frequency"],
+
+                task["priority"],
+
+                status,
+
+                remarks
+
+            )
+
+            if result["success"]:
+
+                st.success("Saved Successfully")
+
+            else:
+
+                st.error(result["message"])
