@@ -102,32 +102,35 @@ st.divider()
 
 if st.button(
     "💾 SAVE TODAY'S REVIEW",
-    use_container_width=True
+    use_container_width=True,
+    type="primary"
 ):
 
-    success = 0
+    progress = st.progress(0)
 
-    for row in records:
+    saved = 0
+
+    for i, row in enumerate(records):
 
         response = save_review(
 
             row["date"],
-
             row["coordinator"],
-
             row["task"],
-
             row["frequency"],
-
             row["priority"],
-
             row["status"],
-
             row["remarks"]
 
         )
 
-        if response["success"]:
-            success += 1
+        if response.get("success", False):
+            saved += 1
 
-    st.success(f"{success} Tasks Saved Successfully")
+        progress.progress((i + 1) / len(records))
+
+    st.success(f"✅ {saved} / {len(records)} Tasks Saved Successfully")
+
+    st.balloons()
+
+    st.rerun()
