@@ -55,3 +55,17 @@ def save_review(
             "message": str(e)
 
         }
+        def load_reviews():
+
+    try:
+
+        response = requests.get(
+            WEB_APP_URL,
+            timeout=30
+        )
+
+        return response.json()
+
+    except Exception:
+
+        return []
