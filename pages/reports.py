@@ -1,7 +1,7 @@
 import streamlit as st
-import pandas as pd
 
-from utils.export import dataframe_to_excel
+from utils.google_sheets import load_reviews
+from utils.export import export_excel
 
 st.set_page_config(
     page_title="Reports",
@@ -11,38 +11,36 @@ st.set_page_config(
 
 st.title("📄 Reports")
 
-st.divider()
+df = load_reviews()
 
-sample = pd.DataFrame({
+if df.empty:
 
-    "Coordinator":[
-        "Coordinator 1",
-        "Coordinator 2",
-        "Coordinator 3",
-        "Coordinator 4"
-    ],
+    st.warning("No Data Available")
 
-    "Completed":[15,14,13,12],
-
-    "Pending":[1,2,3,4]
-
-})
+    st.stop()
 
 st.dataframe(
-    sample,
-    use_container_width=True
+
+    df,
+
+    use_container_width=True,
+
+    hide_index=True
+
 )
 
-excel = dataframe_to_excel(sample)
+excel = export_excel(df)
 
 st.download_button(
 
     "📥 Download Excel Report",
 
-    data=excel,
+    excel,
 
-    file_name="Coordinator_Report.xlsx",
+    "Coordinator_Report.xlsx",
 
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+
+    use_container_width=True
 
 )
