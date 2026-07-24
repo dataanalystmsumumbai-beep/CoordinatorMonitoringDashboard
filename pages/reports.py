@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 
+from utils.theme import load_css
+
 from utils.google_sheets import load_reviews
 from utils.export import export_excel
 
