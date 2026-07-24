@@ -9,6 +9,8 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+load_css()
+
 st.title(f"{APP_ICON} {APP_NAME}")
 
 st.caption(
