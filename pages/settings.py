@@ -2,11 +2,15 @@ import streamlit as st
 import pandas as pd
 from config import *
 
+from utils.theme import load_css
+
 st.set_page_config(
     page_title="Settings",
     page_icon="⚙️",
     layout="wide"
 )
+
+load_css()
 
 st.title("⚙️ Settings")
 
