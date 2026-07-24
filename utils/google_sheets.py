@@ -40,7 +40,6 @@ def load_reviews():
         if df.empty:
             return df
 
-        # Convert all column names to lowercase
         df.columns = [str(c).strip().lower() for c in df.columns]
 
         return df
@@ -51,6 +50,7 @@ def load_reviews():
 
         return pd.DataFrame()
 
+
 def add_coordinator(name):
 
     payload = {
@@ -58,30 +58,25 @@ def add_coordinator(name):
         "name": name
     }
 
-    r = requests.post(
-        WEB_APP_URL,
-        json=payload
-    )
+    try:
 
-    return r.json()
+        r = requests.post(
+            WEB_APP_URL,
+            json=payload
+        )
+
+        return r.json()
+
+    except Exception as e:
+
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+
 def load_coordinators():
 
-    def get_coordinator_names():
-
-    data = load_coordinators()
-
-    if not isinstance(data, list):
-        return []
-
-    names = []
-
-    for row in data:
-
-        if "Coordinator" in row:
-            names.append(row["Coordinator"])
-
-    return names
-    
     try:
 
         r = requests.get(
@@ -93,3 +88,22 @@ def load_coordinators():
     except:
 
         return []
+
+
+def get_coordinator_names():
+
+    data = load_coordinators()
+
+    if not isinstance(data, list):
+        return []
+
+    names = []
+
+    for row in data:
+
+        name = row.get("Coordinator", "").strip()
+
+        if name:
+            names.append(name)
+
+    return sorted(names)
