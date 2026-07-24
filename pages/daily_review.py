@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import date
-from config import MASTER_TASKS, COORDINATORS
+from config import MASTER_TASKS
+from utils.google_sheets import load_coordinators
 from utils.google_sheets import save_review
 from utils.theme import load_css
 
@@ -24,10 +25,31 @@ with col1:
     )
 
 with col2:
-    coordinator = st.selectbox(
-        "Coordinator",
-        COORDINATORS
-    )
+    coordinators = load_coordinators()
+
+if isinstance(coordinators, list):
+
+    coordinator_list = []
+
+    for row in coordinators:
+
+        if "Coordinator" in row:
+
+            coordinator_list.append(
+                row["Coordinator"]
+            )
+
+else:
+
+    coordinator_list = []
+
+coordinator = st.selectbox(
+
+    "Coordinator",
+
+    coordinator_list
+
+)
 
 st.divider()
 
