@@ -14,6 +14,9 @@ st.title("🚨 Pending Tracker")
 
 df = load_reviews()
 
+st.write(df.columns)
+st.write(df.head())
+
 if df.empty:
     st.warning("No Data Found")
     st.stop()
