@@ -14,11 +14,33 @@ st.title("🚨 Pending Tracker")
 
 df = load_reviews()
 
-if isinstance(df, list):
-    df = pd.DataFrame(df)
-
 if df.empty:
     st.warning("No Data Found")
+    st.stop()
+
+# Normalize column names
+df.columns = (
+    df.columns
+    .astype(str)
+    .str.strip()
+    .str.lower()
+    .str.replace(" ", "_")
+)
+
+required = [
+    "date",
+    "coordinator",
+    "task",
+    "frequency",
+    "priority",
+    "status"
+]
+
+missing = [c for c in required if c not in df.columns]
+
+if missing:
+    st.error(f"Missing Columns: {missing}")
+    st.write("Available Columns:", list(df.columns))
     st.stop()
 
 pending = df[df["status"] == "Pending"].copy()
