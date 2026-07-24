@@ -12,6 +12,8 @@ st.set_page_config(
     layout="wide"
 )
 
+load_css()
+
 st.title("📄 Reports")
 
 data = load_reviews()
