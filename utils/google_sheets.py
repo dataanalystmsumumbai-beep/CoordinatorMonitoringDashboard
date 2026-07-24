@@ -1,34 +1,39 @@
 import requests
 import pandas as pd
 
-WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzEz6BVmAWhoR5Wws5h2FU76pH6ypE-aMe4bKopvRPHVuAWqI7Gfa5w4Je7i4YvJemk/exec"
+WEB_APP_URL = "YOUR_APPS_SCRIPT_WEBAPP_URL"
 
 
-def save_review(
-    review_date,
-    coordinator,
-    task,
-    frequency,
-    priority,
-    status,
-    remarks,
-):
+def save_review(date,
+                coordinator,
+                task,
+                frequency,
+                priority,
+                status,
+                remarks):
 
     payload = {
-        "date": str(review_date),
+
+        "date": date,
         "coordinator": coordinator,
         "task": task,
         "frequency": frequency,
         "priority": priority,
         "status": status,
-        "remarks": remarks,
+        "remarks": remarks
+
     }
 
     try:
+
         r = requests.post(
+
             WEB_APP_URL,
+
             json=payload,
-            timeout=30,
+
+            timeout=30
+
         )
 
         return r.json()
@@ -36,8 +41,11 @@ def save_review(
     except Exception as e:
 
         return {
+
             "success": False,
-            "message": str(e),
+
+            "message": str(e)
+
         }
 
 
@@ -46,17 +54,21 @@ def load_reviews():
     try:
 
         r = requests.get(
+
             WEB_APP_URL,
-            timeout=30,
+
+            timeout=30
+
         )
 
         data = r.json()
 
         if isinstance(data, list):
+
             return pd.DataFrame(data)
 
         return pd.DataFrame()
 
-    except Exception:
+    except:
 
         return pd.DataFrame()
