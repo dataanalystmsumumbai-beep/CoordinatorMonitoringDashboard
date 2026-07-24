@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+from utils.theme import load_css
+
 from utils.google_sheets import load_reviews
 
 st.set_page_config(
@@ -9,6 +11,8 @@ st.set_page_config(
     page_icon="🚨",
     layout="wide"
 )
+
+load_css()
 
 st.title("🚨 Pending Tracker")
 
