@@ -50,3 +50,17 @@ def load_reviews():
         print(e)
 
         return pd.DataFrame()
+
+def add_coordinator(name):
+
+    payload = {
+        "action": "add_coordinator",
+        "name": name
+    }
+
+    r = requests.post(
+        WEB_APP_URL,
+        json=payload
+    )
+
+    return r.json()
