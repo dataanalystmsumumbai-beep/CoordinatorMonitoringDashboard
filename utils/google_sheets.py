@@ -1,8 +1,7 @@
 import requests
 import pandas as pd
 
-WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwLX91WvDWwj0QmRMvdFHy42iPTqarUPv1pTz7h08TKYcxFUD2NNqa23NJHOcl0ujvz/exec"
-
+WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5Hp3uzhYCJQy1T2qUkKj0gY15msPGjEZjITMuOq7cm-J0KUMSBSkiFJEH1CORSfLS/exec"
 
 def save_review(date, coordinator, task, frequency, priority, status, remarks):
 
