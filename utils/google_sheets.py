@@ -40,13 +40,8 @@ def load_reviews():
         if df.empty:
             return df
 
-        df.columns = (
-            df.columns
-            .astype(str)
-            .str.strip()
-            .str.lower()
-            .str.replace(" ", "_")
-        )
+        # Convert all column names to lowercase
+        df.columns = [str(c).strip().lower() for c in df.columns]
 
         return df
 
