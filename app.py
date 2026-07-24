@@ -1,5 +1,6 @@
 import streamlit as st
 from config import *
+from utils.theme import load_css
 
 st.set_page_config(
     page_title=APP_NAME,
