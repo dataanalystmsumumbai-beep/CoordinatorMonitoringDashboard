@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 
-WEB_APP_URL = "YOUR_APPS_SCRIPT_WEBAPP_URL"
+WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwLX91WvDWwj0QmRMvdFHy42iPTqarUPv1pTz7h08TKYcxFUD2NNqa23NJHOcl0ujvz/exec"
 
 
 def save_review(date,
