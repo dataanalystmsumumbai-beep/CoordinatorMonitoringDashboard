@@ -66,6 +66,22 @@ def add_coordinator(name):
     return r.json()
 def load_coordinators():
 
+    def get_coordinator_names():
+
+    data = load_coordinators()
+
+    if not isinstance(data, list):
+        return []
+
+    names = []
+
+    for row in data:
+
+        if "Coordinator" in row:
+            names.append(row["Coordinator"])
+
+    return names
+    
     try:
 
         r = requests.get(
