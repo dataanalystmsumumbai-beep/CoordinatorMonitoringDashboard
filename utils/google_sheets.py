@@ -64,3 +64,16 @@ def add_coordinator(name):
     )
 
     return r.json()
+def load_coordinators():
+
+    try:
+
+        r = requests.get(
+            WEB_APP_URL + "?action=coordinators"
+        )
+
+        return r.json()
+
+    except:
+
+        return []
