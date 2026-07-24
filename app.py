@@ -1,5 +1,5 @@
 import streamlit as st
-from config import APP_NAME, APP_ICON
+from config import *
 
 st.set_page_config(
     page_title=APP_NAME,
@@ -10,4 +10,10 @@ st.set_page_config(
 
 st.title(f"{APP_ICON} {APP_NAME}")
 
-st.info("👈 Open a module from the left sidebar.")
+st.caption(
+    f"{DEPARTMENT} | {APP_YEAR}"
+)
+
+st.success(
+    "👈 Select a page from the left sidebar."
+)
