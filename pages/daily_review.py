@@ -2,12 +2,15 @@ import streamlit as st
 from datetime import date
 from config import MASTER_TASKS, COORDINATORS
 from utils.google_sheets import save_review
+from utils.theme import load_css
 
 st.set_page_config(
     page_title="Daily Review",
     page_icon="📋",
     layout="wide"
 )
+
+load_css()
 
 st.title("📋 Daily Review")
 st.divider()
