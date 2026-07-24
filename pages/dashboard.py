@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-from utils.theme import load_css
+from utils.theme import load_css, card
 
 from utils.google_sheets import load_reviews
 
@@ -94,19 +94,19 @@ high_pending = len(
 c1, c2, c3, c4, c5 = st.columns(5)
 
 with c1:
-    st.metric("📋 Total Tasks", total)
+    card("📋 Total Tasks", total, "#1565C0")
 
 with c2:
-    st.metric("✅ Completed", completed)
+    card("✅ Completed", completed, "#2E7D32")
 
 with c3:
-    st.metric("⏳ Pending", pending)
+    card("⏳ Pending", pending, "#FB8C00")
 
 with c4:
-    st.metric("🔥 High Priority", high_pending)
+    card("🔥 High Priority", high_pending, "#D32F2F")
 
 with c5:
-    st.metric("📈 Completion", f"{completion}%")
+    card("📈 Completion", f"{completion}%", "#6A1B9A")
 
 st.subheader("Overall Progress")
 
