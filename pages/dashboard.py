@@ -14,6 +14,32 @@ st.set_page_config(
 
 load_css()
 
+from datetime import datetime
+
+today = datetime.now().strftime("%d %B %Y")
+
+st.markdown(f"""
+<div style="background:linear-gradient(90deg,#1565C0,#1E88E5);
+padding:20px;
+border-radius:15px;
+color:white;
+margin-bottom:20px;">
+
+<h1 style="color:white;margin:0;">
+🏥 Ward Coordinator Monitoring Dashboard
+</h1>
+
+<p style="font-size:18px;margin:5px 0;">
+Public Health Department | BMC
+</p>
+
+<p style="margin:0;">
+📅 {today}
+</p>
+
+</div>
+""", unsafe_allow_html=True)
+
 st.title("📊 Executive Dashboard")
 
 data = load_reviews()
@@ -67,15 +93,22 @@ high_pending = len(
 
 c1, c2, c3, c4, c5 = st.columns(5)
 
-c1.metric("📋 Total", total)
+with c1:
+    st.metric("📋 Total Tasks", total)
 
-c2.metric("✅ Completed", completed)
+with c2:
+    st.metric("✅ Completed", completed)
 
-c3.metric("⏳ Pending", pending)
+with c3:
+    st.metric("⏳ Pending", pending)
 
-c4.metric("🔥 High Pending", high_pending)
+with c4:
+    st.metric("🔥 High Priority", high_pending)
 
-c5.metric("📈 Completion", f"{completion}%")
+with c5:
+    st.metric("📈 Completion", f"{completion}%")
+
+st.subheader("Overall Progress")
 
 st.progress(completion / 100)
 
@@ -275,4 +308,10 @@ st.dataframe(
     score,
     use_container_width=True,
     hide_index=True
+)
+
+st.markdown("---")
+
+st.caption(
+    "Ward Coordinator Monitoring Dashboard | Version 1.1 | Public Health Department"
 )
