@@ -1,0 +1,51 @@
+/* Main */
+.main {
+    background-color: #F4F8FB;
+}
+
+/* KPI Cards */
+div[data-testid="metric-container"] {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    border-left: 6px solid #1565C0;
+}
+
+/* Buttons */
+.stButton>button {
+    background: #1565C0;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+}
+
+.stButton>button:hover {
+    background: #0D47A1;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background: #0F172A;
+}
+
+section[data-testid="stSidebar"] * {
+    color: white;
+}
+
+/* Dataframe */
+div[data-testid="stDataFrame"] {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Header */
+h1 {
+    color: #1565C0;
+    font-weight: 700;
+}
+
+h2, h3 {
+    color: #1E293B;
+}
