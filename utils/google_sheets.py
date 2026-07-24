@@ -1,6 +1,8 @@
 import requests
+import pandas as pd
 
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwLX91WvDWwj0QmRMvdFHy42iPTqarUPv1pTz7h08TKYcxFUD2NNqa23NJHOcl0ujvz/exec"
+
 
 def save_review(date, coordinator, task, frequency, priority, status, remarks):
 
@@ -16,11 +18,9 @@ def save_review(date, coordinator, task, frequency, priority, status, remarks):
 
     try:
         r = requests.post(WEB_APP_URL, json=payload)
-
         return r.json()
 
     except Exception as e:
-
         return {
             "success": False,
             "error": str(e)
@@ -33,8 +33,25 @@ def load_reviews():
 
         r = requests.get(WEB_APP_URL)
 
-        return r.json()
+        data = r.json()
 
-    except:
+        df = pd.DataFrame(data)
 
-        return []
+        if df.empty:
+            return df
+
+        df.columns = (
+            df.columns
+            .astype(str)
+            .str.strip()
+            .str.lower()
+            .str.replace(" ", "_")
+        )
+
+        return df
+
+    except Exception as e:
+
+        print(e)
+
+        return pd.DataFrame()
